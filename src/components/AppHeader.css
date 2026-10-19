@@ -1,0 +1,677 @@
+
+/* =========================================
+   LINEUP — SHARED APP HEADER
+   ========================================= */
+
+.app-header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  width: calc(100% - 40px);
+  max-width: 1200px;
+  min-width: 0;
+  min-height: 76px;
+  margin-inline: auto;
+
+  position: relative;
+  z-index: 5;
+  flex-shrink: 0;
+}
+
+.app-header *,
+.app-header *::before,
+.app-header *::after {
+  box-sizing: border-box;
+}
+
+.app-header-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex-shrink: 0;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-header-brand-icon {
+  display: grid;
+  place-items: center;
+
+  width: 39px;
+  height: 39px;
+  flex: 0 0 39px;
+
+  border-radius: 12px;
+}
+
+.app-header-brand-icon svg {
+  display: block;
+  width: 21px;
+  height: 21px;
+}
+
+.app-header-wordmark {
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 780;
+  letter-spacing: -0.8px;
+  white-space: nowrap;
+}
+
+.app-header-period {
+  color: #a5b4fc;
+}
+
+.app-header-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-width: 0;
+  min-height: 42px;
+  padding: 0 13px;
+
+  border: 1px solid transparent;
+  border-radius: 12px;
+
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.app-header-action svg {
+  flex: 0 0 16px;
+}
+
+/* =========================================
+   HERO VARIANT
+   ========================================= */
+
+.app-header-hero .app-header-wordmark {
+  color: #ffffff;
+}
+
+.app-header-hero .app-header-brand-icon {
+  color: #4f46e5;
+  background: #ffffff;
+}
+
+.app-header-hero .app-header-action {
+  color: #ffffff;
+  background: rgb(255 255 255 / 9%);
+  border-color: rgb(255 255 255 / 22%);
+}
+
+.app-header-hero .app-header-action:hover {
+  background: rgb(255 255 255 / 16%);
+}
+
+/* =========================================
+   LIGHT VARIANT
+   ========================================= */
+
+.app-header-light .app-header-wordmark {
+  color: #172033;
+}
+
+.app-header-light .app-header-brand-icon {
+  color: #ffffff;
+  background: #4f46e5;
+}
+
+.app-header-light .app-header-action {
+  color: #4338ca;
+  background: #eef2ff;
+  border-color: #e0e7ff;
+}
+
+.app-header-light .app-header-action:hover {
+  background: #e0e7ff;
+}
+
+/* =========================================
+   GRADIENT VARIANT
+   ========================================= */
+
+.app-header-gradient .app-header-wordmark {
+  color: #ffffff;
+}
+
+.app-header-gradient .app-header-brand-icon {
+  color: #4338ca;
+  background: #ffffff;
+}
+
+.app-header-gradient .app-header-period {
+  color: #c4b5fd;
+}
+
+.app-header-gradient .app-header-action {
+  color: #ffffff;
+  background: rgb(255 255 255 / 10%);
+  border-color: rgb(255 255 255 / 25%);
+}
+
+.app-header-gradient .app-header-action:hover {
+  background: rgb(255 255 255 / 18%);
+}
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 640px) {
+  .app-header {
+    width: calc(100% - 32px);
+    min-height: 64px;
+    gap: 8px;
+  }
+
+  .app-header-brand {
+    gap: 8px;
+  }
+
+  .app-header-brand-icon {
+    width: 35px;
+    height: 35px;
+    flex-basis: 35px;
+    border-radius: 11px;
+  }
+
+  .app-header-brand-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .app-header-wordmark {
+    font-size: 19px;
+    letter-spacing: -0.7px;
+  }
+
+  .app-header-action {
+    min-height: 38px;
+    gap: 5px;
+    padding-inline: 9px;
+    border-radius: 11px;
+    font-size: 11px;
+  }
+
+  .app-header-action svg {
+    width: 14px;
+    height: 14px;
+    flex-basis: 14px;
+  }
+}
+
+/* Extra narrow phones */
+@media (max-width: 360px) {
+  .app-header {
+    width: calc(100% - 28px);
+    gap: 6px;
+  }
+
+  .app-header-brand {
+    gap: 7px;
+  }
+
+  .app-header-wordmark {
+    font-size: 18px;
+  }
+
+  .app-header-action {
+    padding-inline: 8px;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-header-action {
+    transition: none;
+  }
+}
+
+
+/* Homepage header: blend into the hero gradient */
+.app-header-hero {
+  background: transparent !important;
+  box-shadow: none;
+}
+
+/* White wordmark for contrast against the dark gradient */
+.app-header-hero .app-header-wordmark {
+  color: #ffffff;
+}
+
+.app-header-hero .app-header-period {
+  color: #c4b5fd;
+}
+
+/* White logo tile */
+.app-header-hero .app-header-brand-icon {
+  color: #4338ca;
+  background: #ffffff;
+}
+
+/* Shop-owner action button */
+.app-header-hero .app-header-action {
+  color: #ffffff;
+  background: rgb(255 255 255 / 7%);
+  border-color: rgb(255 255 255 / 24%);
+}
+
+.app-header-hero .app-header-action:hover {
+  background: rgb(255 255 255 / 14%);
+  border-color: rgb(255 255 255 / 45%);
+}
+
+
+
+/* =========================================
+   OPTIONAL SHARED HEADER MENU
+   Only rendered when showMenu is enabled
+   ========================================= */
+
+.app-header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  min-width: 0;
+}
+
+.app-header-menu-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.app-header-menu-button {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #334155;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.app-header-menu-button:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.app-header-menu-button:focus-visible {
+  outline: 3px solid #a5b4fc;
+  outline-offset: 3px;
+}
+
+.app-header-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 100;
+  width: min(260px, calc(100vw - 32px));
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgb(15 23 42 / 14%);
+  animation: app-header-menu-enter 140ms ease-out;
+}
+
+.app-header-dropdown-label {
+  margin: 5px 10px 9px;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.app-header-dropdown-link {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 11px;
+  padding: 0 10px;
+  border-radius: 10px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.app-header-dropdown-link:hover {
+  background: #eef2ff;
+  color: #4338ca;
+}
+
+.app-header-dropdown-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  place-items: center;
+  border-radius: 9px;
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.app-header-dropdown-icon svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.app-header-external {
+  margin-left: auto;
+  color: #94a3b8;
+  font-size: 15px;
+}
+
+@keyframes app-header-menu-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 360px) {
+  .app-header-right {
+    gap: 6px;
+  }
+
+  .app-header-menu-button {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-header-menu-button,
+  .app-header-dropdown-link {
+    transition: none;
+  }
+
+  .app-header-dropdown {
+    animation: none;
+  }
+}
+
+
+/* =========================================
+   RESPONSIVE SHOP NAVIGATION
+   Desktop: inline shortcuts
+   Mobile: hamburger dropdown
+   ========================================= */
+
+.app-header-desktop-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+
+.app-header-desktop-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 42px;
+  padding: 0 11px;
+
+  border: 1px solid transparent;
+  border-radius: 11px;
+
+  color: #475569;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.app-header-desktop-link:hover {
+  color: #4338ca;
+  background: #eef2ff;
+  border-color: #e0e7ff;
+}
+
+.app-header-desktop-link:focus-visible {
+  outline: 3px solid #a5b4fc;
+  outline-offset: 2px;
+}
+
+.app-header-desktop-icon {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  place-items: center;
+  color: #4f46e5;
+}
+
+.app-header-desktop-icon svg {
+  display: block;
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.app-header-desktop-link .app-header-external {
+  margin-left: -3px;
+  font-size: 13px;
+}
+
+/* Hide hamburger when desktop shortcuts are available. */
+.app-header-menu-wrap {
+  display: none;
+}
+
+/* =========================================
+   MOBILE NAVIGATION
+   ========================================= */
+
+@media (max-width: 767px) {
+  .app-header-desktop-nav {
+    display: none;
+  }
+
+  .app-header-menu-wrap {
+    display: block;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .app-header-menu-button {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    padding: 0;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+
+    background: #ffffff;
+    color: #334155;
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+
+    transition:
+      background 160ms ease,
+      border-color 160ms ease;
+  }
+
+  .app-header-menu-button:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+  }
+
+  .app-header-menu-button:focus-visible {
+    outline: 3px solid #a5b4fc;
+    outline-offset: 3px;
+  }
+
+  .app-header-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    z-index: 100;
+
+    width: min(260px, calc(100vw - 32px));
+    padding: 8px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+
+    background: #ffffff;
+    box-shadow: 0 16px 40px rgb(15 23 42 / 14%);
+
+    animation: app-header-menu-enter 140ms ease-out;
+  }
+
+  .app-header-dropdown-label {
+    margin: 5px 10px 9px;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .app-header-dropdown-link {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    min-height: 48px;
+    padding: 0 10px;
+
+    border-radius: 10px;
+
+    color: #334155;
+    font-size: 13px;
+    font-weight: 650;
+    text-decoration: none;
+
+    -webkit-tap-highlight-color: transparent;
+
+    transition:
+      background 140ms ease,
+      color 140ms ease;
+  }
+
+  .app-header-dropdown-link:hover {
+    background: #eef2ff;
+    color: #4338ca;
+  }
+
+  .app-header-dropdown-icon {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    place-items: center;
+
+    border-radius: 9px;
+    background: #eef2ff;
+    color: #4f46e5;
+  }
+
+  .app-header-dropdown-icon svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .app-header-dropdown-link .app-header-external {
+    margin-left: auto;
+    color: #94a3b8;
+    font-size: 15px;
+  }
+}
+
+/* Compact hamburger on very narrow phones. */
+@media (max-width: 360px) {
+  .app-header-menu-button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .app-header-right {
+    gap: 6px;
+  }
+}
+
+@keyframes app-header-menu-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-header-desktop-link,
+  .app-header-menu-button,
+  .app-header-dropdown-link {
+    transition: none;
+  }
+
+  .app-header-dropdown {
+    animation: none;
+  }
+}
