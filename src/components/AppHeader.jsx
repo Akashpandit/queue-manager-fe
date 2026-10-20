@@ -261,11 +261,9 @@ export default function AppHeader({
             </>
           ) : (
             <>
+              
               <Link to="/login" className="app-header-action">
-                <span>Log in</span>
-              </Link>
-              <Link to="/signup" className="app-header-action">
-                <span>Sign up</span>
+                <span>Log In</span>
                 <ArrowIcon />
               </Link>
             </>

@@ -241,7 +241,6 @@ export default function CustomerQueue() {
           <div className="cq-brand">LineUp<span>.</span></div>
           <span className="cq-spinner" />
           <h1>{error ? "Couldn't load the queue" : "Loading queue"}</h1>
-          <p>{error || "Getting the latest shop information…"}</p>
          <p>{error || "Getting the latest shop information…"}</p>
           {!error && <SlowHint show={slow} />}
           {error && (
