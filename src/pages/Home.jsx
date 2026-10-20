@@ -1,8 +1,11 @@
 
-import { Link } from "react-router-dom";
-import { listOwners } from "../owner";
+import { Link ,Navigate} from "react-router-dom";
 import AppHeader from "../components/AppHeader.jsx";
 import "./Home.css";
+import { useAuth } from "../auth.jsx";
+import { listOwners, removeOwner } from "../owner";
+import { useCallback, useEffect, useState } from "react";
+import { api } from "../api.js";
 
 const useCases = [
   {
@@ -249,8 +252,13 @@ function QueuePreview({ variant = "desktop" }) {
 }
 
 export default function Home() {
-  const shops = listOwners();
+      const { user, loading } = useAuth();
 
+  // Owners have nothing to do on the landing page, so send them to their shops.
+  if (loading) return null;
+  if (user) return <Navigate to="/shops" replace />;
+
+  const startPath = "/signup";
   return (
     <main className="home-page">
       
@@ -276,7 +284,7 @@ export default function Home() {
             </p>
 
             <div className="home-hero-actions">
-              <Link to="/register" className="home-primary-button">
+              <Link to={startPath} className="home-primary-button">
                 Set up your shop
                 <FeatureIcon name="arrow" size={18} />
               </Link>
@@ -404,53 +412,7 @@ export default function Home() {
         </div>
       </section>
 
-      {shops.length > 0 && (
-        <section className="home-shops">
-          <div className="home-shops-heading">
-            <div>
-              <p className="home-eyebrow">YOUR BUSINESS</p>
-              <h2>Your shops</h2>
-              <p className="home-shops-subtitle">
-                Pick up where you left off.
-              </p>
-            </div>
-            <Link to="/register" className="home-secondary-button">
-              <span>+</span> Add shop
-            </Link>
-          </div>
-
-          <div className="home-shop-list">
-            {shops.map((shop) => (
-              <article className="home-shop-row" key={shop.publicId}>
-                <div className="home-shop-info">
-                  <span className="home-shop-icon">
-                    <FeatureIcon name="store" size={22} />
-                  </span>
-                  <div className="home-shop-name">
-                    <h3>{shop.name}</h3>
-                    <p>Saved on this device</p>
-                  </div>
-                </div>
-
-                <div className="home-shop-actions">
-                  <Link
-                    className="home-text-link"
-                    to={`/shop/${shop.publicId}/manage`}
-                  >
-                    Dashboard <FeatureIcon name="arrow" size={15} />
-                  </Link>
-                  <Link
-                    className="home-text-link home-text-link-secondary"
-                    to={`/shop/${shop.publicId}`}
-                  >
-                    QR code
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
+      
 
       <section className="home-bottom-cta">
         <div className="home-bottom-cta-copy">
@@ -464,7 +426,7 @@ export default function Home() {
             and your customers.
           </p>
         </div>
-        <Link to="/register" className="home-primary-button home-cta-button">
+        <Link to={startPath} className="home-primary-button home-cta-button">
           Get started for free
           <FeatureIcon name="arrow" size={18} />
         </Link>

@@ -5,6 +5,7 @@ import { api } from "../api";
 import { enableSound, isSoundUnlocked, playAlert } from "../alerts";
 import "./CustomerQueue.css";
 import AppHeader from "../components/AppHeader";
+import { LoadingButton, SlowHint, useSlow } from "../components/Loading.jsx";
 
 const storageKey = (publicId) => `entry:${publicId}`;
 
@@ -77,7 +78,7 @@ export default function CustomerQueue() {
   const [updatedAt, setUpdatedAt] = useState(null);
   const [soundOn, setSoundOn] = useState(isSoundUnlocked());
   const [servingViewDismissed, setServingViewDismissed] = useState(false);
-
+  const slow = useSlow(busy || !queue);
   const prevStatus = useRef(null);
 
   const refresh = useCallback(async () => {
@@ -241,6 +242,8 @@ export default function CustomerQueue() {
           <span className="cq-spinner" />
           <h1>{error ? "Couldn't load the queue" : "Loading queue"}</h1>
           <p>{error || "Getting the latest shop information…"}</p>
+         <p>{error || "Getting the latest shop information…"}</p>
+          {!error && <SlowHint show={slow} />}
           {error && (
             <button
               className="cq-button cq-button-primary"
@@ -421,14 +424,15 @@ export default function CustomerQueue() {
               when your phone is locked or the browser is suspended.
             </p>
 
-            <button
+                        <LoadingButton
               type="button"
               className="cq-text-button cq-danger-link"
               onClick={handleCancel}
-              disabled={busy}
+              loading={busy}
+              loadingText="Leaving queue…"
             >
-              {busy ? "Leaving queue…" : "Leave queue"}
-            </button>
+              Leave queue
+            </LoadingButton>
           </section>
         )}
 
@@ -574,13 +578,16 @@ export default function CustomerQueue() {
               </p>
             )}
 
-            <button
+                        <SlowHint show={slow} />
+            <LoadingButton
               type="submit"
               className="cq-button cq-button-primary cq-join-button"
-              disabled={busy || (hasServices && !service)}
+              loading={busy}
+              loadingText="Getting your token…"
+              disabled={hasServices && !service}
             >
-              {busy ? "Joining queue…" : "Join queue"}
-            </button>
+              Join queue
+            </LoadingButton>
 
             <p className="cq-privacy-note">
               Your place is saved on this device, so you can return to this

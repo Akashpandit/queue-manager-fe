@@ -763,3 +763,265 @@
     font-size: 12px;
   }
 }
+.db-loading-status {
+  margin-top: 16px;
+  color: var(--db-muted);
+  font-size: 14px;
+}
+.db-loading > * {
+  animation: db-enter 350ms ease-out both;
+}
+.db-loading {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.db-loading p {
+  max-width: min(90%, 420px);
+  margin: 0;
+  color: var(--db-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.db-loading-status {
+  display: flex;
+  justify-content: center;
+  color: var(--db-muted);
+  font-size: 14px;
+}
+
+/* Keep the loading/error screen centered on phones too */
+@media (max-width: 640px) {
+  .db-screen.db-loading {
+    align-items: center;
+  }
+}
+
+.db-skeleton {
+  display: inline-block;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #eef0f4 25%, #f7f8fa 50%, #eef0f4 75%);
+  background-size: 200% 100%;
+  animation: db-shimmer 1.2s infinite;
+}
+.db-skeleton-title {
+  display: block;
+  width: min(60%, 360px);
+  height: clamp(34px, 4vw, 52px);
+  margin: 0 auto;
+}
+.db-skeleton-value {
+  width: 56px;
+  height: 0.9em;
+  vertical-align: middle;
+}
+@keyframes db-shimmer { to { background-position: -200% 0; } }
+
+.db-token-area .ld-spinner-wrap { color: #fff; }
+
+.db-connection-warning {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.db-connection-warning .db-retry { margin-top: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .db-skeleton { animation: none; }
+}
+
+/* =========================================
+   Redesign: business name header, 2-column
+   one-screen desktop layout, small footer
+   ========================================= */
+
+/* ---------- shared (mobile first) */
+.db-title { min-width: 0; text-align: left; }
+.db-title .db-eyebrow { margin: 0 0 4px; font-size: 10px; letter-spacing: 2.4px; }
+.db-header h1 {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--db-text);
+  font-size: clamp(24px, 6vw, 34px);
+  font-weight: 850;
+  line-height: 1.12;
+  letter-spacing: -1px;
+}
+.db-skeleton-title { margin: 0; width: min(70%, 320px); height: 34px; }
+
+.db-content { display: flex; flex-direction: column; gap: 14px; padding-top: 18px; }
+
+.db-side {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.db-qr-card {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid #e0e7ff;
+  border-radius: 19px;
+  background: #f8faff;
+  text-align: center;
+}
+.db-qr-text h2 {
+  margin: 0 0 6px;
+  color: var(--db-text);
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+.db-qr-text p { margin: 0; color: var(--db-muted); font-size: 12px; line-height: 1.5; }
+.db-qr-card .db-qr-frame svg { width: 150px; height: auto; }
+
+.db-powered { color: #94a3b8; font-size: 11px; }
+.db-powered strong { color: var(--db-primary-dark); font-weight: 800; }
+.db-powered strong span { color: var(--db-primary); }
+
+.db-sound-group { display: inline-flex; align-items: center; gap: 10px; }
+.db-sound-error { color: #b45309; font-size: 11px; }
+
+/* On phones the footer stacks and the page scrolls normally */
+@media (max-width: 899px) {
+  .db-bottom-line { margin-top: 18px; }
+}
+
+/* ---------- desktop / TV: everything on one screen */
+@media (min-width: 900px) and (min-height: 540px) {
+  .db-screen {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    padding: clamp(10px, 2vh, 28px);
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .db-board {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    padding: clamp(14px, 3vh, 36px) clamp(20px, 3vw, 56px);
+    border-radius: clamp(18px, 3vh, 28px);
+  }
+
+  .db-header { padding-bottom: clamp(10px, 2vh, 22px); }
+  .db-header h1 { font-size: clamp(28px, 5.2vh, 60px); letter-spacing: -1.6px; }
+  .db-title .db-eyebrow { font-size: clamp(10px, 1.5vh, 14px); margin-bottom: 6px; }
+  .db-status { font-size: clamp(12px, 1.9vh, 18px); padding: 0.7em 1.2em; }
+
+  .db-content {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: clamp(12px, 2.2vh, 28px);
+    padding-top: clamp(12px, 2.2vh, 28px);
+  }
+
+  /* Now serving fills the left column */
+  .db-now-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    min-height: 0;
+    padding: clamp(18px, 3.4vh, 40px);
+    border-radius: clamp(18px, 3vh, 28px);
+  }
+  .db-live-indicator { font-size: clamp(11px, 1.7vh, 16px); }
+  .db-now-caption { font-size: clamp(10px, 1.6vh, 15px); }
+
+  .db-token-area {
+    flex: 1;
+    min-height: 0;
+    align-items: center;
+    padding: 0;
+  }
+  .db-token-prefix { font-size: clamp(48px, 11vh, 120px); }
+  .db-token-number {
+    font-size: clamp(120px, 38vh, 420px);
+    letter-spacing: -0.04em;
+  }
+  .db-now-bottom { font-size: clamp(14px, 2.4vh, 24px); }
+
+  /* Right column: info cards and QR */
+  .db-side {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    gap: clamp(10px, 2vh, 22px);
+    min-height: 0;
+  }
+
+  .db-info-card {
+    padding: clamp(12px, 2.4vh, 28px);
+    gap: clamp(12px, 2vh, 22px);
+    border-radius: clamp(14px, 2.4vh, 22px);
+  }
+  .db-info-icon {
+    width: clamp(40px, 6.5vh, 68px);
+    height: clamp(40px, 6.5vh, 68px);
+    border-radius: clamp(12px, 2vh, 20px);
+  }
+  .db-info-icon svg { width: 50%; height: 50%; }
+  .db-info-label { font-size: clamp(12px, 1.9vh, 18px); margin-bottom: 4px; }
+  .db-info-value { font-size: clamp(30px, 6.4vh, 72px); }
+  .db-info-unit { font-size: clamp(13px, 2vh, 20px); }
+
+  .db-qr-card {
+    grid-column: auto;
+    min-height: 0;
+    justify-content: center;
+    gap: clamp(6px, 1.4vh, 16px);
+    padding: clamp(12px, 2.2vh, 26px);
+    border-radius: clamp(14px, 2.4vh, 22px);
+  }
+  .db-qr-text h2 { font-size: clamp(14px, 2.4vh, 24px); margin-bottom: 4px; }
+  .db-qr-text p { font-size: clamp(11px, 1.7vh, 16px); }
+  .db-qr-card .db-qr-frame { min-height: 0; }
+  .db-qr-card .db-qr-frame svg {
+    width: clamp(110px, 24vh, 300px);
+    max-width: 100%;
+    height: auto;
+  }
+  .db-qr-label { font-size: clamp(10px, 1.5vh, 14px); }
+
+  /* Small footer */
+  .db-bottom-line {
+    margin-top: clamp(8px, 1.6vh, 18px);
+    padding-top: clamp(8px, 1.4vh, 14px);
+    border-top: 1px solid var(--db-border);
+    font-size: clamp(10px, 1.5vh, 13px);
+  }
+  .db-sound-button { font-size: clamp(10px, 1.5vh, 13px); padding: 7px 12px; }
+
+  .db-connection-warning { margin-top: 8px; }
+}
+
+/* Narrower desktops (900 to 1100px): give the token column a bit less */
+@media (min-width: 900px) and (max-width: 1100px) and (min-height: 540px) {
+  .db-content { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+}
+
+/* Phones: header stays compact and the board scrolls */
+@media (max-width: 640px) {
+  .db-header { padding-bottom: 14px; }
+  .db-content { padding-top: 14px; }
+  .db-qr-card { padding: 16px; }
+  .db-bottom-line { align-items: flex-start; }
+}

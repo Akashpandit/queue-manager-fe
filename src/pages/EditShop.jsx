@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../api";
-import { getOwner, saveOwner } from "../owner";
 import "./EditShop.css";
 
 const emptyService = () => ({
@@ -76,7 +75,6 @@ function Icon({ name, size = 20 }) {
 export default function EditShop() {
   const { publicId } = useParams();
   const navigate = useNavigate();
-  const owner = getOwner(publicId);
 
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -171,7 +169,7 @@ export default function EditShop() {
     setBusy(true);
 
     try {
-      const updated = await api.updateStore(publicId, owner.owner_key, {
+      await api.updateStore(publicId, {
         name: trimmedName,
         address: address.trim() || null,
         services: namedServices.map((service) => ({
@@ -182,7 +180,7 @@ export default function EditShop() {
         })),
       });
 
-      saveOwner(publicId, { ...owner, name: updated.name });
+      
       navigate(`/shop/${publicId}/manage`);
     } catch (err) {
       setError(err.message || "Unable to save changes. Please try again.");
@@ -191,36 +189,7 @@ export default function EditShop() {
     }
   }
 
-  if (!owner?.owner_key) {
-    return (
-      <main className="es-page">
-        <div className="es-container es-centered">
-          <div className="es-brand">
-            <span className="es-brand-mark">L</span>
-            <span>LineUp</span>
-          </div>
 
-          <section className="es-state-card">
-            <div className="es-state-icon">
-              <Icon name="shop" size={26} />
-            </div>
-            <p className="es-eyebrow">OWNER ACCESS</p>
-            <h1>Owner key needed</h1>
-            <p className="es-muted">
-              Open your dashboard and enter your owner key before editing your
-              shop details.
-            </p>
-            <Link
-              className="es-primary-button es-full-button"
-              to={`/shop/${publicId}/manage`}
-            >
-              Go to dashboard <Icon name="arrow" size={18} />
-            </Link>
-          </section>
-        </div>
-      </main>
-    );
-  }
 
   if (!loaded) {
     return (

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import AppHeader from "../components/AppHeader.jsx";
 import "./Onboarding.css";
+import { LoadingButton, SlowHint, useSlow } from "../components/Loading.jsx";
 
 const emptyService = () => ({
   name: "",
@@ -82,6 +83,7 @@ export default function Onboarding() {
   const [services, setServices] = useState(initialServices);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const slow = useSlow(busy);
 
   const validServices = services.filter((service) =>
     service.name.trim()
@@ -153,7 +155,7 @@ export default function Onboarding() {
     setError("");
 
     if (step === 1) {
-      navigate("/");
+      navigate("/shops");
       return;
     }
 
@@ -192,18 +194,7 @@ export default function Onboarding() {
       };
 
       const store = await api.createStore(payload);
-
-      localStorage.setItem(
-        `owner:${store.public_id}`,
-        JSON.stringify({
-          owner_key: store.owner_key,
-          name: store.name,
-        })
-      );
-
-      navigate(`/shop/${store.public_id}`, {
-        state: { justCreated: true },
-      });
+      navigate(`/shop/${store.public_id}`);
     } catch (err) {
       setError(
         err.message || "Could not create your shop. Please try again."
@@ -544,6 +535,7 @@ export default function Onboarding() {
 
           <footer className="mobile-setup-actions">
             <div className="mobile-action-inner">
+             <SlowHint show={slow} />
               <div className="mobile-action-buttons">
                 <button
                   type="button"
@@ -553,26 +545,21 @@ export default function Onboarding() {
                   aria-label={step === 1 ? "Back to home" : "Previous step"}
                 >
                   {step === 1 ? (
-                    <span className="mobile-back-home">Home</span>
+                    <span className="mobile-back-home">Cancel</span>
                   ) : (
                     <span aria-hidden="true">←</span>
                   )}
                 </button>
 
-                <button
+                                <LoadingButton
                   type="submit"
                   className="mobile-primary-button"
-                  disabled={busy}
+                  loading={busy}
+                  loadingText="Creating your shop…"
                 >
-                  <span>
-                    {busy
-                      ? "Creating your shop..."
-                      : step === 3
-                        ? "Create my shop"
-                        : "Continue"}
-                  </span>
-                  {!busy && <StepIcon type="arrow" />}
-                </button>
+                  <span>{step === 3 ? "Create my shop" : "Continue"}</span>
+                  <StepIcon type="arrow" />
+                </LoadingButton>
               </div>
 
               

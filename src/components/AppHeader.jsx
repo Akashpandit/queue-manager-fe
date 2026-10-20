@@ -1,9 +1,12 @@
 
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./AppHeader.css";
+import { useAuth } from "../auth.jsx";
+
 
 function QRIcon({ size = 21 }) {
+  
   return (
     <svg
       width={size}
@@ -75,6 +78,14 @@ function ShortcutIcon({ type }) {
     return <QRIcon size={19} />;
   }
 
+    if (type === "chart") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
+      </svg>
+    );
+  }
+
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 20h9" />
@@ -82,11 +93,10 @@ function ShortcutIcon({ type }) {
     </svg>
   );
 }
-export function FullLogo({variant}){
-    return(
-        <div className={`app-header-${variant}`}>
-
-        <Link to="/" className="app-header-brand" aria-label="LineUp home">
+export function FullLogo({ variant, to = "/" }) {
+  return (
+    <div className={`app-header-${variant}`}>
+      <Link to={to} className="app-header-brand" aria-label="LineUp home">
         <span className="app-header-brand-icon">
           <QRIcon />
         </span>
@@ -105,8 +115,11 @@ export default function AppHeader({
   menuItems = [],
   type='full'
 }) {
+    const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     if (!menuOpen) return undefined;
@@ -134,7 +147,7 @@ export default function AppHeader({
 
   return (
     <header className={`app-header app-header-${variant}`}>
-      <FullLogo/>
+            <FullLogo to={user ? "/shops" : "/"} />
   
         
       <div className="app-header-right">
@@ -226,12 +239,37 @@ export default function AppHeader({
           </>
         )}
 
-        {showAction && (
-          <Link to="/register" className="app-header-action">
-            <span>For shop owners</span>
-            <ArrowIcon />
-          </Link>
-        )}
+                {showAction &&
+          (user ? (
+            <>
+                            {pathname !== "/shops" && (
+                <Link to="/shops" className="app-header-action">
+                  <span>My shops</span>
+                  <ArrowIcon />
+                </Link>
+              )}
+              <button
+                type="button"
+                className="app-header-action"
+                onClick={() => {
+                  logout();
+                  navigate("/");
+                }}
+              >
+                <span>Log out</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="app-header-action">
+                <span>Log in</span>
+              </Link>
+              <Link to="/signup" className="app-header-action">
+                <span>Sign up</span>
+                <ArrowIcon />
+              </Link>
+            </>
+          ))}
       </div>
       
     </header>

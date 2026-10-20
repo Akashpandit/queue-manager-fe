@@ -341,55 +341,6 @@ export default function ShopPage() {
           )}
         </section>
 
-        {/* Owner key: intentionally kept at the bottom */}
-        {owner?.owner_key && (
-          <section className="shop-owner-section">
-            <details className="shop-owner-details">
-              <summary>
-                <span className="shop-owner-summary-icon">
-                  <Icon name="shield" size={18} />
-                </span>
-
-                <span className="shop-owner-summary-text">
-                  <strong>Owner key</strong>
-                  <small>Private · Used to manage your shop</small>
-                </span>
-
-                <span className="shop-owner-chevron">⌄</span>
-              </summary>
-
-              <div className="shop-owner-body">
-                {location.state?.justCreated && (
-                  <p className="shop-owner-notice">
-                    Save this key somewhere safe. It is shown only once after
-                    setup.
-                  </p>
-                )}
-
-                <div className="shop-key-row">
-                  <code>{owner.owner_key}</code>
-
-                  <button
-                    type="button"
-                    className="shop-copy-button"
-                    onClick={copyKey}
-                  >
-                    <Icon name={copied ? "check" : "copy"} size={16} />
-                    {copied ? "Copied" : "Copy"}
-                  </button>
-                </div>
-
-                {copyError && (
-                  <p className="shop-copy-error">{copyError}</p>
-                )}
-
-                <p className="shop-owner-footnote">
-                  Keep this key private. It is also saved in this browser.
-                </p>
-              </div>
-            </details>
-          </section>
-        )}
 
         <footer className="shop-footer">
           Made simpler with <strong>LineUp.</strong>

@@ -1,8 +1,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
-import { getOwner, saveOwner, removeOwner } from "../owner";
 import { minutesSince } from "../utils";
 import "./Dashboard.css";
 import AppHeader from "../components/AppHeader";
@@ -94,18 +93,15 @@ function StatCard({ icon, label, value, detail }) {
 export default function Dashboard() {
   const { publicId } = useParams();
 
-  const [ownerKey, setOwnerKey] = useState(
-    () => getOwner(publicId)?.owner_key || ""
-  );
+
   const [store, setStore] = useState(null);
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState(null);
   const [guestName, setGuestName] = useState("");
-  const [keyInput, setKeyInput] = useState("");
-  const [loginError, setLoginError] = useState("");
   const [statusOpen, setStatusOpen] = useState(false);
+  const [forbidden, setForbidden] = useState(false);
 
   const toastTimer = useRef(null);
   const statusRef = useRef(null);
@@ -133,36 +129,22 @@ export default function Dashboard() {
     };
   }, [publicId]);
 
-  // Load the owner's queue data.
   const refresh = useCallback(async () => {
-    if (!ownerKey) return;
+  try {
+    setData(await api.manage(publicId));
+    setError("");
+  } catch (err) {
+    if (err.status === 403) setForbidden(true);
+    else if (err.status !== 401) setError(err.message); // 401 is handled globally
+  }
+}, [publicId]);
 
-    try {
-      const result = await api.manage(publicId, ownerKey);
-      setData(result);
-      setError("");
-    } catch (err) {
-      if (err.status === 401) {
-        removeOwner(publicId);
-        setOwnerKey("");
-        setData(null);
-        setLoginError("That owner key is not valid. Please enter it again.");
-      } else {
-        setError(err.message || "Unable to refresh the queue.");
-      }
-    }
-  }, [publicId, ownerKey]);
-
-  // Poll for updates every five seconds.
-  useEffect(() => {
-    if (!ownerKey) return undefined;
-
-    refresh();
-
-    const timer = setInterval(refresh, 5000);
-
-    return () => clearInterval(timer);
-  }, [refresh, ownerKey]);
+useEffect(() => {
+  if (forbidden) return;
+  refresh();
+  const timer = setInterval(refresh, 5000);
+  return () => clearInterval(timer);
+}, [refresh, forbidden]);
 
   // Close the status dropdown when clicking outside or pressing Escape.
   useEffect(() => {
@@ -224,37 +206,13 @@ export default function Dashboard() {
     }
   }
 
-  async function handleLogin(event) {
-    event.preventDefault();
-
-    const key = keyInput.trim();
-
-    if (!key) return;
-
-    try {
-      await api.manage(publicId, key);
-
-      saveOwner(publicId, {
-        owner_key: key,
-        name: store?.name,
-      });
-
-      setLoginError("");
-      setOwnerKey(key);
-    } catch (err) {
-      setLoginError(
-        err.status === 401
-          ? "That owner key is not valid."
-          : err.message || "Unable to sign in."
-      );
-    }
-  }
+  
 
   const addWalkIn = (serviceName) =>
     act(
       () =>
         api
-          .walkIn(publicId, ownerKey, {
+          .walkIn(publicId, {
             service_name: serviceName,
             customer_name: guestName.trim() || null,
           })
@@ -267,7 +225,7 @@ export default function Dashboard() {
 
   const callNext = () =>
     act(
-      () => api.callNext(publicId, ownerKey),
+      () => api.callNext(publicId),
       (result) =>
         result.now_serving
           ? `Now serving #${result.now_serving.token_number}`
@@ -284,7 +242,7 @@ export default function Dashboard() {
 
     return act(
       async () => {
-        const updated = await api.updateStore(publicId, ownerKey, {
+        const updated = await api.updateStore(publicId, {
           status,
         });
 
@@ -301,7 +259,7 @@ export default function Dashboard() {
 
   const markDone = (token) =>
     act(
-      () => api.markDone(publicId, ownerKey, token),
+      () => api.markDone(publicId, token),
       `#${token} marked done`
     );
 
@@ -309,69 +267,20 @@ export default function Dashboard() {
     if (!window.confirm(`Mark token #${token} as no-show?`)) return;
 
     act(
-      () => api.markNoShow(publicId, ownerKey, token),
+      () => api.markNoShow(publicId, token),
       `#${token} marked no-show`
     );
   };
 
-  // Owner login screen.
-  if (!ownerKey) {
-    return (
-      <main className="dq-page dq-login-page">
-        <div className="dq-login-brand">
-          <span className="dq-brand-mark">L</span>
-          <span>LineUp</span>
-        </div>
-
-        <section className="dq-login-card">
-          <div className="dq-login-icon">
-            <Icon name="lock" size={25} />
-          </div>
-
-          <p className="dq-eyebrow">OWNER ACCESS</p>
-
-          <h1>{store?.name || "Manage your queue"}</h1>
-
-          <p className="dq-login-description">
-            Enter your owner key to manage customers, track tokens, and
-            control your shop queue.
-          </p>
-
-          <form onSubmit={handleLogin} className="dq-login-form">
-            <label htmlFor="dq-owner-key">Owner key</label>
-
-            <input
-              id="dq-owner-key"
-              className="dq-input"
-              value={keyInput}
-              onChange={(event) => setKeyInput(event.target.value)}
-              placeholder="Enter your owner key"
-              autoComplete="off"
-              required
-            />
-
-            {loginError && (
-              <p className="dq-error" role="alert">
-                {loginError}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              className="dq-primary-button dq-full-button"
-            >
-              Open dashboard
-              <Icon name="arrow" size={18} />
-            </button>
-          </form>
-
-          <p className="dq-login-footnote">
-            Your owner key is saved on this device after successful login.
-          </p>
-        </section>
-      </main>
-    );
-  }
+ if (forbidden) {
+  return (
+    <div className="page">
+      <h1>No access</h1>
+      <p className="muted">This shop belongs to a different account.</p>
+      <Link className="button" to="/">Back to my shops</Link>
+    </div>
+  );
+}
 
   // Loading and error screen.
   if (!data || !store) {
@@ -443,6 +352,11 @@ export default function Dashboard() {
       label: "QR code",
       to: `/shop/${publicId}`,
       icon: "qr",
+    },
+    {
+      label: "Insights",
+      to: `/shop/${publicId}/insights`,
+      icon: "chart",
     },
     {
       label: "Edit shop",

@@ -1,0 +1,43 @@
+.ld-spinner {
+  display: inline-block;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: ld-spin 0.7s linear infinite;
+  vertical-align: -3px;
+}
+.ld-spinner-inline { width: 16px; height: 16px; margin-right: 8px; }
+.ld-spinner-wrap { display: inline-flex; align-items: center; gap: 10px; }
+@keyframes ld-spin { to { transform: rotate(360deg); } }
+
+.ld-page {
+  min-height: 50vh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  text-align: center;
+  color: #667085;
+}
+
+.ld-slow {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fef0c7;
+  color: #93370d;
+  font-size: 0.85rem;
+}
+
+.ld-skeleton {
+  height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #eef0f4 25%, #f7f8fa 50%, #eef0f4 75%);
+  background-size: 200% 100%;
+  animation: ld-shimmer 1.2s infinite;
+}
+@keyframes ld-shimmer { to { background-position: -200% 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ld-spinner, .ld-skeleton { animation-duration: 2.5s; }
+}
